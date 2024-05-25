@@ -1,10 +1,10 @@
 import { Entity } from '@/core/entities/entity'
 import { Optional } from '@/core/entities/types/optional'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 interface AnswerProps {
-  authorId: UniqueEntityID
-  questionId: UniqueEntityID
+  authorId: UniqueEntityId
+  questionId: UniqueEntityId
   content: string
   createdAt: Date
   updateAt?: Date
@@ -46,7 +46,7 @@ export class Answer extends Entity<AnswerProps> {
 
   static create(
     props: Optional<AnswerProps, 'createdAt'>,
-    id?: UniqueEntityID,
+    id?: UniqueEntityId,
   ) {
     const answer = new Answer(
       {
