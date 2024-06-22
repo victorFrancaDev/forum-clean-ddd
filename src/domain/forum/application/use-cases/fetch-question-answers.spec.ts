@@ -35,12 +35,12 @@ describe('Fetch Question Answers', () => {
       }),
     )
 
-    const { answers } = await feachQuestionAnswers.execute({
+    const result = await feachQuestionAnswers.execute({
       questionId: question.id.toString(),
       page: 1,
     })
 
-    expect(answers).toEqual([
+    expect(result.value?.answers).toEqual([
       expect.objectContaining({
         questionId: question.id,
         createdAt: new Date(2022, 1, 23),
@@ -65,11 +65,11 @@ describe('Fetch Question Answers', () => {
       )
     }
 
-    const { answers } = await feachQuestionAnswers.execute({
+    const result = await feachQuestionAnswers.execute({
       questionId: question.id.toString(),
       page: 2,
     })
 
-    expect(answers.length).toEqual(2)
+    expect(result.value?.answers.length).toEqual(2)
   })
 })

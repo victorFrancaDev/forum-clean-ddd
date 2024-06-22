@@ -35,12 +35,12 @@ describe('Fetch Question Comments', () => {
       }),
     )
 
-    const { questionComments } = await fetchQuestionComments.execute({
+    const result = await fetchQuestionComments.execute({
       questionId: 'question-1',
       page: 1,
     })
 
-    expect(questionComments).toEqual([
+    expect(result.value?.questionComments).toEqual([
       expect.objectContaining({
         questionId: new UniqueEntityId('question-1'),
         createdAt: new Date(2022, 1, 23),
@@ -63,11 +63,11 @@ describe('Fetch Question Comments', () => {
       )
     }
 
-    const { questionComments } = await fetchQuestionComments.execute({
+    const result = await fetchQuestionComments.execute({
       questionId: 'question-1',
       page: 2,
     })
 
-    expect(questionComments.length).toEqual(2)
+    expect(result.value?.questionComments.length).toEqual(2)
   })
 })

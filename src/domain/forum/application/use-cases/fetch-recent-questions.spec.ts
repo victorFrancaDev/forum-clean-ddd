@@ -30,9 +30,9 @@ describe('Fetch Recents Questions', () => {
       }),
     )
 
-    const { questions } = await fetchRecentsQuestions.execute({ page: 1 })
+    const result = await fetchRecentsQuestions.execute({ page: 1 })
 
-    expect(questions).toEqual([
+    expect(result.value?.questions).toEqual([
       expect.objectContaining({ createdAt: new Date(2022, 1, 23) }),
       expect.objectContaining({ createdAt: new Date(2022, 1, 20) }),
       expect.objectContaining({ createdAt: new Date(2022, 1, 18) }),
@@ -44,8 +44,8 @@ describe('Fetch Recents Questions', () => {
       await inMemoryQuestionsRepository.create(makeQuestion())
     }
 
-    const { questions } = await fetchRecentsQuestions.execute({ page: 2 })
+    const result = await fetchRecentsQuestions.execute({ page: 2 })
 
-    expect(questions.length).toEqual(2)
+    expect(result.value?.questions.length).toEqual(2)
   })
 })
