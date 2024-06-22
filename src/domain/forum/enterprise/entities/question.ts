@@ -1,5 +1,5 @@
 import { Slug } from './value-objects/slug'
-import { Entity } from '@/core/entities/entity'
+import { Entity } from '@/core/entities/types/entity'
 import { UniqueEntityId } from '@/core/entities/types/unique-entity-id'
 import { Optional } from '@/core/entities/types/optional'
 import dayjs from 'dayjs'

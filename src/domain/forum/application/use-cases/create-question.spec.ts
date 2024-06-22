@@ -11,12 +11,13 @@ describe('Create Question', () => {
   })
 
   it('create a question', async () => {
-    const { question } = await createQuestion.execute({
+    const result = await createQuestion.execute({
       authorId: '1',
       title: 'Nova pergunda',
       content: 'A pergunta é',
     })
 
-    expect(question.id).toBeTruthy()
+    expect(result.isRight()).toBe(true)
+    expect(inMemoryQuestionsRepository.items[0]).toEqual(result.value?.question)
   })
 })
