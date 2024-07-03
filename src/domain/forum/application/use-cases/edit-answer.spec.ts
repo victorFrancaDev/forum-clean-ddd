@@ -3,14 +3,23 @@ import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-r
 import { makeAnswer } from 'test/factories/make-answer'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from './errors/not-allowed-error'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
 
 let inMemoryAnswersRepository: InMemoryAnswersRepository
+let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let editAnswer: EditAnswerUseCase
 
 describe('Edit Answer', () => {
   beforeEach(() => {
-    inMemoryAnswersRepository = new InMemoryAnswersRepository()
-    editAnswer = new EditAnswerUseCase(inMemoryAnswersRepository)
+    inMemoryAnswerAttachmentsRepository =
+      new InMemoryAnswerAttachmentsRepository()
+    inMemoryAnswersRepository = new InMemoryAnswersRepository(
+      inMemoryAnswerAttachmentsRepository,
+    )
+    editAnswer = new EditAnswerUseCase(
+      inMemoryAnswersRepository,
+      inMemoryAnswerAttachmentsRepository,
+    )
   })
 
   it('should be able to edit a answer', async () => {
@@ -27,11 +36,21 @@ describe('Edit Answer', () => {
       answerId: 'answer-1',
       authorId: 'author-1',
       content: 'content',
+      attachmentsIds: ['1', '3'],
     })
 
     expect(inMemoryAnswersRepository.items[0]).toMatchObject({
       content: 'content',
     })
+    expect(
+      inMemoryAnswersRepository.items[0].attachments.currentItems,
+    ).toHaveLength(2)
+    expect(inMemoryAnswersRepository.items[0].attachments.currentItems).toEqual(
+      [
+        expect.objectContaining({ attachmentId: new UniqueEntityId('1') }),
+        expect.objectContaining({ attachmentId: new UniqueEntityId('3') }),
+      ],
+    )
   })
 
   it('should be able to edit a answer from another user', async () => {
@@ -48,6 +67,7 @@ describe('Edit Answer', () => {
       answerId: 'answer-1',
       authorId: 'author-2',
       content: 'content',
+      attachmentsIds: [],
     })
 
     expect(result.isLeft()).toBe(true)
